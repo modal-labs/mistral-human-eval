@@ -3,10 +3,11 @@
 ![Des singes](assets/des_singes.jpg)
 
 This repo demonstrates how to replicate the results of the [Large Language Monkeys paper](https://arxiv.org/abs/2407.21787)
-using a different model, [Ministral 8B](https://mistral.ai/news/ministraux) and a different dataset, [HumanEval](https://github.com/openai/human-eval).
+using a different model, [Ministral 8B](https://mistral.ai/news/ministraux),
+and a different dataset, [HumanEval](https://github.com/openai/human-eval).
 
-It runs both the code generation model and the sandboxed code evaluation on Modal and massively in parallel --
-on Modal's free tier, that's code generation across 10 H100 GPUs running at an aggregate throughput of over 50 - 100k tok/s
+It runs both the code generation model and the sandboxed code evaluation on [Modal](https://modal.com) and massively in parallel --
+on Modal's free tier, that's code generation across 10 H100 GPUs running at an aggregate throughput of 5 - 10k tok/s per GPU
 and code evaluation across over 100 Sandboxes.
 
 ## How-To
@@ -14,7 +15,7 @@ and code evaluation across over 100 Sandboxes.
 ### Setup Modal
 
 ```bash
-pip install modal --upgrade  # that's it :)
+pip install modal  # that's it :)
 modal setup  # if you're new to Modal
 ```
 
