@@ -79,7 +79,7 @@ def compute_results():
             pattern = "*/*.jsonl"
             handles = []
             for file_path in env.glob(pattern):
-                # Skip results files
+                # skip results files
                 if str(file_path).endswith("_results.jsonl"):
                     continue
 
@@ -91,10 +91,10 @@ def compute_results():
                     handles.append(run_humaneval.spawn(file_path, problem_file))
 
             if not handles:
-                print(f"no new files in {env}")
+                print(f"no samples without results in {env}")
                 done = True
             else:
-                print(f"{len(handles)} new files in {env}, repeating")
+                print(f"executing on {len(handles)} samples without results in {env}")
 
                 modal.FunctionCall.gather(*handles)
 
