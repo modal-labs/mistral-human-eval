@@ -10,6 +10,8 @@ It runs both the code generation model and the sandboxed code evaluation on [Mod
 on Modal's free tier, that's code generation across 10 H100 GPUs running at an aggregate throughput of 5 - 10k tok/s per GPU
 and code evaluation across over 100 Sandboxes.
 
+For more on using Modal Sandboxes, see [our product launch post](https://modal.com/blog/sandbox-launch).
+
 ## How-To
 
 ### Setup Modal
