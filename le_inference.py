@@ -34,12 +34,14 @@ VLLM_PORT = 8000
 @app.function(
     image=vllm_image,
     gpu=f"H100:{N_GPU}",
-    allow_concurrent_inputs=20,  # 2000 total sequences
     scaledown_window=20 * MINUTES,
     volumes={
         "/root/.cache/huggingface": hf_cache_vol,
         "/root/.cache/vllm": vllm_cache_vol,
     },
+)
+@modal.concurrent(
+    max_inputs=20,  # 2000 total sequences
 )
 @modal.web_server(port=VLLM_PORT, startup_timeout=5 * MINUTES)
 def serve():
@@ -73,11 +75,11 @@ def test(test_timeout=5 * MINUTES):
     import time
     import urllib
 
-    print(f"Running health check for server at {serve.web_url}")
+    print(f"Running health check for server at {serve.get_web_url()}")
     up, start, delay = False, time.time(), 10
     while not up:
         try:
-            with urllib.request.urlopen(serve.web_url + "/health") as response:
+            with urllib.request.urlopen(serve.get_web_url() + "/health") as response:
                 if response.getcode() == 200:
                     up = True
         except Exception:
@@ -85,23 +87,23 @@ def test(test_timeout=5 * MINUTES):
                 break
             time.sleep(delay)
 
-    assert up, f"Failed health check for server at {serve.web_url}"
+    assert up, f"Failed health check for server at {serve.get_web_url()}"
 
-    print(f"Successful health check for server at {serve.web_url}")
+    print(f"Successful health check for server at {serve.get_web_url()}")
 
     messages = [
         {
             "role": "system",
-            "content": "Respond exclusively in French, starting each message with a 🥖 emoji.",
+            "content": "Réponds exclusivement en français, jamais en anglais, en commençant chaque message par un emoji 🥖.",
         }
     ]
     messages.append({"role": "user", "content": "Testing! Is this thing on?"})
-    print(f"Sending a sample message to {serve.web_url}", *messages, sep="\n")
+    print(f"Sending a sample message to {serve.get_web_url()}", *messages, sep="\n")
 
     headers = {"Content-Type": "application/json"}
     payload = json.dumps({"messages": messages, "model": MODEL_NAME})
     req = urllib.request.Request(
-        serve.web_url + "/v1/chat/completions",
+        serve.get_web_url() + "/v1/chat/completions",
         data=payload.encode("utf-8"),
         headers=headers,
         method="POST",
