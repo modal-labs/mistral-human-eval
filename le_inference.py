@@ -94,7 +94,9 @@ def test(test_timeout=5 * MINUTES):
     messages = [
         {
             "role": "system",
-            "content": "Réponds exclusivement en français, jamais en anglais, en commençant chaque message par un emoji 🥖.",
+            "content": "Vous êtes un assistant français."
+            " Répondez exclusivement en français, jamais en anglais, même si l’utilisateur s’adresse à vous en anglais,"
+            " en commençant chaque message par un emoji 🥖.",
         }
     ]
     messages.append({"role": "user", "content": "Testing! Is this thing on?"})
